@@ -64,7 +64,10 @@ fun ButtonBackgroundService(context: Context, modifier: Modifier = Modifier) {
             Spacer(modifier = modifier.size(ButtonDefaults.IconSpacing))
             Text(text = "Start Background Service")
         }
-        Button(onClick = { /*TODO*/ }, modifier = modifier.widthIn(min = ButtonDefaults.MinWidth)) {
+        Button(onClick = {
+            val serviceIntent = Intent(context, BackgroundService::class.java)
+            context.stopService(serviceIntent)
+        }, modifier = modifier.widthIn(min = ButtonDefaults.MinWidth)) {
             Icon(
                 imageVector = Icons.Default.Info,
                 contentDescription = null,
