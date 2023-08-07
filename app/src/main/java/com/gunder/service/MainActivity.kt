@@ -2,6 +2,7 @@ package com.gunder.service
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -25,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.gunder.service.services.BackgroundService
+import com.gunder.service.services.ForegroundService
 import com.gunder.service.ui.theme.ServiceTheme
 
 
@@ -76,7 +78,14 @@ fun ButtonBackgroundService(context: Context, modifier: Modifier = Modifier) {
             Spacer(modifier = modifier.size(ButtonDefaults.IconSpacing))
             Text(text = "Stop Background Service")
         }
-        Button(onClick = { /*TODO*/ }, modifier = modifier.widthIn(min = ButtonDefaults.MinWidth)) {
+        Button(onClick = {
+            val startForegroundService = Intent(context, ForegroundService::class.java)
+            if (Build.VERSION.SDK_INT >= 26) {
+                context.startForegroundService(startForegroundService)
+            } else {
+                context.startService(startForegroundService)
+            }
+        }, modifier = modifier.widthIn(min = ButtonDefaults.MinWidth)) {
             Icon(
                 imageVector = Icons.Default.Info,
                 contentDescription = null,
@@ -85,7 +94,10 @@ fun ButtonBackgroundService(context: Context, modifier: Modifier = Modifier) {
             Spacer(modifier = modifier.size(ButtonDefaults.IconSpacing))
             Text(text = "Start Foreground Service")
         }
-        Button(onClick = { /*TODO*/ }, modifier = modifier.widthIn(min = ButtonDefaults.MinWidth)) {
+        Button(onClick = {
+            val startForegroundService = Intent(context, ForegroundService::class.java)
+            context.stopService(startForegroundService)
+        }, modifier = modifier.widthIn(min = ButtonDefaults.MinWidth)) {
             Icon(
                 imageVector = Icons.Default.Info,
                 contentDescription = null,
